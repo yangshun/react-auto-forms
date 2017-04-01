@@ -1,3 +1,3 @@
-import FooBar from './FooBar';
+import AutoInput from './AutoInput';
 
-export default FooBar;
+export default AutoInput;
