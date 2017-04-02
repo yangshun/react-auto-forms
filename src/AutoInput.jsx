@@ -17,15 +17,17 @@ function validate(required, customValidate, value) {
   return !customValidate || (customValidate && customValidate(value));
 }
 
-function processValue(value, type) {
+function processValue(event, type) {
   switch (type) {
     case 'number':
-      if (value !== '') {
-        return parseInt(value, 10);
+      if (event.target.value !== '') {
+        return parseInt(event.target.value, 10);
       }
-      return value;
+      return event.target.value;
+    case 'checkbox':
+      return event.target.checked;
     default:
-      return value;
+      return event.target.value;
   }
 }
 
@@ -33,20 +35,24 @@ class AutoInput extends Component {
   static propTypes = {
     model: PropTypes.string,
     // A React component instance.
-    parent: PropTypes.object,  // eslint-disable-line react/forbid-prop-types
+    parent: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     validate: PropTypes.func,
     // Default HTML5 attributes.
     required: PropTypes.bool,
     type: PropTypes.string,
+    value: PropTypes.any, // eslint-disable-line react/forbid-prop-types
     // Input event callbacks.
     onFocus: PropTypes.func,
     onChange: PropTypes.func,
   };
 
   static defaultProps = {
+    model: '',
+    parent: null,
     validate: () => true,
     required: false,
     type: 'text',
+    value: null,
     onFocus: () => {},
     onChange: () => {},
   };
@@ -54,6 +60,7 @@ class AutoInput extends Component {
   constructor(props) {
     super(props);
     const state = cloneDeep(initialState);
+    // Determine if initial state is valid.
     if (this.hasParent()) {
       const value = get(props.parent.state, props.model, '');
       state.valid = validate(props.required, props.validate, value);
@@ -71,8 +78,13 @@ class AutoInput extends Component {
 
   render() {
     const ownProps = omit(this.props, ['model', 'parent', 'validate']);
-    let value = null;
-    if (this.hasParent()) {
+    if (this.props.type === 'radio') {
+      // Passthrough value for radio type.
+      ownProps.checked = this.props.value === get(this.props.parent.state, this.props.model);
+    } else if (this.props.type === 'checkbox') {
+      ownProps.checked = get(this.props.parent.state, this.props.model, false);
+    } else if (this.hasParent()) {
+      // Retrieve value from parent state.
       ownProps.value = get(this.props.parent.state, this.props.model, '');
     }
     return (
@@ -85,7 +97,8 @@ class AutoInput extends Component {
           });
         }}
         onChange={(event) => {
-          const newValue = processValue(event.target.value, this.props.type);
+          const newValue = processValue(event, this.props.type);
+
           if (this.hasParent()) {
             const newParentState = cloneDeep(this.props.parent.state);
             set(newParentState, this.props.model, newValue);

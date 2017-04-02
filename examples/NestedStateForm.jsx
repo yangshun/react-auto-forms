@@ -22,6 +22,7 @@ class SimpleForm extends Component {
           model="name"
           parent={this}
         />
+        <br/>
         <label htmlFor="age">Age</label>
         <AutoInput
           id="age"
@@ -29,12 +30,14 @@ class SimpleForm extends Component {
           parent={this}
           type="number"
         />
+        <br/>
         <label htmlFor="dog-name">Dog's Name</label>
         <AutoInput
           id="dog-name"
           model="dog.name"
           parent={this}
         />
+        <br/>
         <label htmlFor="dog-age">Dog's Age</label>
         <AutoInput
           id="dog-age"
