@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import AutoInput from '../src';
+import AutoForms from '../src';
 
 class SimpleForm extends Component {
   state = {
@@ -17,7 +17,7 @@ class SimpleForm extends Component {
       <div>
         <p>My name is {this.state.name}, I am {this.state.age} years old.</p>
         <label htmlFor="name">Name</label>
-        <AutoInput
+        <AutoForms.Input
           id="name"
           type="text"
           model="name"
@@ -25,7 +25,7 @@ class SimpleForm extends Component {
         />
         <br/>
         <label htmlFor="age">Age</label>
-        <AutoInput
+        <AutoForms.Input
           id="age"
           type="number"
           model="age"
@@ -33,7 +33,7 @@ class SimpleForm extends Component {
         />
         <br/>
         <label htmlFor="password">Password</label>
-        <AutoInput
+        <AutoForms.Input
           id="password"
           type="password"
           model="password"
@@ -41,7 +41,7 @@ class SimpleForm extends Component {
         />
         <br/>
         <label htmlFor="email">Email</label>
-        <AutoInput
+        <AutoForms.Input
           id="email"
           type="email"
           model="email"
@@ -49,7 +49,7 @@ class SimpleForm extends Component {
         />
         <br/>
         <label htmlFor="wears-glasses">
-          <AutoInput
+          <AutoForms.Input
             id="wears-glasses"
             type="checkbox"
             model="wearsGlasses"
@@ -60,7 +60,7 @@ class SimpleForm extends Component {
         <br/>
         <div>
           <label>
-            <AutoInput
+            <AutoForms.Input
               id="gender-ratio-male"
               type="radio"
               name="gender"
@@ -73,7 +73,7 @@ class SimpleForm extends Component {
         </div>
         <div>
           <label>
-            <AutoInput
+            <AutoForms.Input
               id="gender-ratio-female"
               type="radio"
               name="gender"

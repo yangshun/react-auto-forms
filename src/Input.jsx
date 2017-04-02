@@ -31,7 +31,7 @@ function processValue(event, type) {
   }
 }
 
-class AutoInput extends Component {
+class AutoFormsInput extends Component {
   static propTypes = {
     model: PropTypes.string,
     // A React component instance.
@@ -52,7 +52,7 @@ class AutoInput extends Component {
     validate: () => true,
     required: false,
     type: 'text',
-    value: null,
+    value: '',
     onFocus: () => {},
     onChange: () => {},
   };
@@ -117,4 +117,4 @@ class AutoInput extends Component {
   }
 }
 
-export default AutoInput;
+export default AutoFormsInput;

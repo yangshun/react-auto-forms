@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import AutoInput from '../src';
+import AutoForms from '../src';
 
 class SimpleForm extends Component {
   state = {
@@ -17,14 +17,14 @@ class SimpleForm extends Component {
       <div>
         <p>My name is {this.state.name}, I am {this.state.age} years old.</p>
         <label htmlFor="name">Name</label>
-        <AutoInput
+        <AutoForms.Input
           id="name"
           model="name"
           parent={this}
         />
         <br/>
         <label htmlFor="age">Age</label>
-        <AutoInput
+        <AutoForms.Input
           id="age"
           model="age"
           parent={this}
@@ -32,14 +32,14 @@ class SimpleForm extends Component {
         />
         <br/>
         <label htmlFor="dog-name">Dog's Name</label>
-        <AutoInput
+        <AutoForms.Input
           id="dog-name"
           model="dog.name"
           parent={this}
         />
         <br/>
         <label htmlFor="dog-age">Dog's Age</label>
-        <AutoInput
+        <AutoForms.Input
           id="dog-age"
           model="dog.age"
           parent={this}

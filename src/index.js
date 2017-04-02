@@ -1,3 +1,6 @@
-import AutoInput from './AutoInput';
+import Input from './Input';
 
-export default AutoInput;
+const AutoForms = {};
+AutoForms.Input = Input;
+
+export default AutoForms;
