@@ -31,9 +31,9 @@ function processValue(value, type) {
 
 class AutoInput extends Component {
   static propTypes = {
-    model: PropTypes.string.isRequired,
+    model: PropTypes.string,
     // A React component instance.
-    parent: PropTypes.object.isRequired,  // eslint-disable-line react/forbid-prop-types
+    parent: PropTypes.object,  // eslint-disable-line react/forbid-prop-types
     validate: PropTypes.func,
     // Default HTML5 attributes.
     required: PropTypes.bool,
@@ -54,8 +54,10 @@ class AutoInput extends Component {
   constructor(props) {
     super(props);
     const state = cloneDeep(initialState);
-    const value = get(props.parent.state, props.model, '');
-    state.valid = validate(props.required, props.validate, value);
+    if (this.hasParent()) {
+      const value = get(props.parent.state, props.model, '');
+      state.valid = validate(props.required, props.validate, value);
+    }
     this.state = state;
   }
 
@@ -63,9 +65,16 @@ class AutoInput extends Component {
     this.setState(initialState);
   }
 
+  hasParent() {
+    return this.props.parent && this.props.model;
+  }
+
   render() {
-    const value = get(this.props.parent.state, this.props.model, '');
     const ownProps = omit(this.props, ['model', 'parent', 'validate']);
+    let value = null;
+    if (this.hasParent()) {
+      ownProps.value = get(this.props.parent.state, this.props.model, '');
+    }
     return (
       <input
         {...ownProps}
@@ -76,10 +85,12 @@ class AutoInput extends Component {
           });
         }}
         onChange={(event) => {
-          const newParentState = cloneDeep(this.props.parent.state);
           const newValue = processValue(event.target.value, this.props.type);
-          set(newParentState, this.props.model, newValue);
-          this.props.parent.setState(newParentState);
+          if (this.hasParent()) {
+            const newParentState = cloneDeep(this.props.parent.state);
+            set(newParentState, this.props.model, newValue);
+            this.props.parent.setState(newParentState);
+          }
 
           this.setState({
             dirty: true,
@@ -88,7 +99,6 @@ class AutoInput extends Component {
             this.props.onChange(event);
           });
         }}
-        value={value}
       />
     );
   }
