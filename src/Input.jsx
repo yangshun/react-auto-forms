@@ -4,6 +4,8 @@ import get from 'lodash/get';
 import omit from 'lodash/omit';
 import cloneDeep from 'lodash/cloneDeep';
 
+import { classNameList } from './utils';
+
 const initialState = {
   touched: false,
   dirty: false,
@@ -76,6 +78,18 @@ class AutoFormsInput extends Component {
     return this.props.parent && this.props.model;
   }
 
+  isTouched() {
+    return this.state.touched;
+  }
+
+  isDirty() {
+    return this.state.dirty;
+  }
+
+  isValid() {
+    return this.state.valid;
+  }
+
   render() {
     const ownProps = omit(this.props, ['model', 'parent', 'validate']);
     if (this.props.type === 'radio') {
@@ -87,6 +101,16 @@ class AutoFormsInput extends Component {
       // Retrieve value from parent state.
       ownProps.value = get(this.props.parent.state, this.props.model, '');
     }
+
+    let classNamesArray = [];
+    if (ownProps.className && typeof ownProps.className === 'string') {
+      classNamesArray = classNameList(ownProps.className);
+    }
+    classNamesArray.push(this.state.touched ? 'af-touched' : 'af-untouched');
+    classNamesArray.push(this.state.dirty ? 'af-dirty' : 'af-pristine');
+    classNamesArray.push(this.state.valid ? 'af-valid' : 'af-invalid');
+    ownProps.className = classNamesArray.join(' ');
+
     return (
       <input
         {...ownProps}
